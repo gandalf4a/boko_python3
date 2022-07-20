@@ -1,5 +1,7 @@
-# Author: Jesse Nebling (@bashexplode)
-# The dylib scanning functions are based off of Patrick Wardle's tool Dylib Hijack Scanner
+# -*- coding: utf-8 -*-
+# repair for python3 by Gandalf4a
+
+# Author: Jesse Nebling (@bashexplode) # The dylib scanning functions are based off of Patrick Wardle's tool Dylib Hijack Scanner
 #
 # boko.py is a static application scanner for macOS that searches for and identifies
 # potential dylib hijacking and weak dylib vulnerabilities for application executables, as well as
@@ -738,7 +740,7 @@ class ExecutableScanner:
                         self.results[binarypath]["execution"]['erroroutput'].append(result[0])
 
                     # Split standard error output and look for RPATH failed expanding, then add to vulnerabilities dict
-                    for line in result[1].split('\n'):
+                    for line in result[1].decode().split('\n'):   #python3需decode
                         if 'RPATH failed expanding' in line:
                             # Properly split failed load path and turn into an absolute path for reporting
                             relativepath = line.split('to: ')[-1]
@@ -1040,11 +1042,11 @@ class Main():
             print('[%s] Created %s.log' % ('*', self.outputstandard))
             
     def banner(self):
-        solid_pixel = unichr(0x2588) * 2
-        light_shade_pixel = unichr(0x2591) * 2
-        med_shade_pixel = unichr(0x2592) * 2
-        dark_shade_pixel = unichr(0x2593) * 2
-        blank_pixel = unichr(0x00A0) * 2
+        solid_pixel = chr(0x2588) * 2           #unchr已弃用
+        light_shade_pixel = chr(0x2591) * 2     #unchr已弃用
+        med_shade_pixel = chr(0x2592) * 2       #unchr已弃用
+        dark_shade_pixel = chr(0x2593) * 2      #unchr已弃用
+        blank_pixel = chr(0x00A0) * 2           #unchr已弃用
 
         sp = solid_pixel
         bp = blank_pixel
@@ -1058,13 +1060,13 @@ class Main():
         canvas = [[bp] * canvas_dimensions[0] for i in range(canvas_dimensions[1])]
 
         fill = [[1, range(4, 14)], 
-                [2, [4] + range(14, 16)],
-                [3, range(5, 8) + [12, 13, 14, 16]],
+                [2, [4] + [x for x in range(14, 16)]],
+                [3, [x for x in range(5, 8)] + [12, 13, 14, 16]],   #range(5, 8) + [12, 13, 14, 16]
                 [4, [6, 8, 12, 17]],
                 [5, [7, 12, 14, 17]],
                 [6, [2, 7, 17]],
-                [7, [1, 3, 8, 17] + range(12, 16)],
-                [8, [2, 4, 5, 8, 12] + range(15, 17)],
+                [7, [1, 3, 8, 17] + [x for x in range(12, 16)]],    #range(12, 16)
+                [8, [2, 4, 5, 8, 12] + [x for x in range(15, 17)]],   #range(15, 17)
                 [9, [1, 3, 6, 7, 13]],
                 [10, [2, 14]],
                 [11, [3, 4, 14]],
@@ -1126,7 +1128,7 @@ class Main():
 
 
         # add signature and tool name
-        center = len(canvas) / 2
+        center = len(canvas) // 2    #python3“/”导致float代替整数，取整用”//“
         toolname = u"boko.py"
         tooldescription = u"Application Hijack Scanner for macOS"
         signature = u"Jesse Nebling (@bashexplode)"
@@ -1137,7 +1139,7 @@ class Main():
         # print canvas
         for y in range(len(canvas)):
             for x in range(len(canvas[y])):
-                print(canvas[x][y].encode('utf-8'), end='')
+                print(canvas[x][y].encode().decode('utf-8', errors='ignore'), end='')   #encode('utf-8')输出二进制信息
             print()
 
 
