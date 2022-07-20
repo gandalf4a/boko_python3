@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# repair for python3 by Gandalf4a
+# patch for python3 by Gandalf4a
 
 # Author: Jesse Nebling (@bashexplode) # The dylib scanning functions are based off of Patrick Wardle's tool Dylib Hijack Scanner
 #
