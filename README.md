@@ -1,3 +1,5 @@
+# repair for python3 by gandalf4a
+
 # boko Application Hijack Scanner for macOS ![This is boko](https://github.com/bashexplode/boko/blob/master/boko.png) 
 boko.py is an application scanner for macOS that searches for and identifies potential dylib hijacking and 
 weak dylib vulnerabilities for application executables, as well as scripts an application may use that 
