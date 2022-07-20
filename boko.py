@@ -219,7 +219,7 @@ class ExecutableScanner:
         file.seek(0)
         if file.read(2) == '#!':
             contents = file.read(50)
-            scripttype = contents.split('\n')[0].split('/')[-1]
+            scripttype = contents.split('\n')[0].decode().split('/')[-1]    #python3需decode
             file.seek(0)
             self.results[fullpath]["script"] = scripttype
             self.results[fullpath]["parse"] = "Script"
@@ -728,12 +728,12 @@ class ExecutableScanner:
                         self.results[binarypath]["execution"]['standardoutput'].append(result[0])
                         if self.verbose:
                             print("[*] %s had standard output when executed:" % binary)
-                            if len(result[0].split('\n')) > 1:
-                                standardoutput = result[0].split('\n')
+                            if len(result[0].decode().split('\n')) > 1:   #python3需decode
+                                standardoutput = result[0].decode().split('\n')    #python3需decode
                                 for line in standardoutput:
                                     print("\t%s" % line)
                             else:
-                                print("\t" + result[0])
+                                print("\t" + result[0].decode('utf-8', errors='ignore'))     #python3需decode
 
                     if result[1] != '':
                         # Add standard error/debugging messages to binaries dictionary
@@ -948,6 +948,9 @@ class Logger(object):
     def write(self, message):
         self.terminal.write(message)
         self.log.write(message)
+
+    def flush(self):     #AttributeError: 'Logger' object has no attribute 'flush'
+        pass
 
 
 # For standalone use of dyib-hijacker
